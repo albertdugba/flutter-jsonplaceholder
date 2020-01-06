@@ -20,28 +20,37 @@ class PostsPage extends StatelessWidget {
             List<Post> posts = snapshot.data;
             return ListView(
               children: posts
-                  .map((Post post) => Container(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: <Color>[
-                          Colors.grey[900],
-                          Colors.black87,
-                          Colors.black45
-                        ])),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            child: ListTile(
-                              title: Text(post.title),
-                              subtitle: Text('ID :${post.userId}'),
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => PostDetail(post: post),
-                                ),
+                  .map(
+                    (Post post) => Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: <Color>[
+                        Colors.grey[900],
+                        Colors.black87,
+                        Colors.black45
+                      ])),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          color: Colors.black38,
+                          child: ListTile(
+                            title: Text(post.title),
+                            subtitle: Text('ID :${post.userId}'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () async {
+                                await httpService.deletePost(post.id);
+                              },
+                            ),
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PostDetail(post: post),
                               ),
                             ),
                           ),
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                   .toList(),
             );
           } else

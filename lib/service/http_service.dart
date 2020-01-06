@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_api_db/model/post.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,5 +22,17 @@ class HttpService {
     } else {
       throw "Can't get posts.";
     }
+  }
+
+  Future<void> deletePost(int id) async {
+    http.Response response = await http.delete('$postsURL/$id');
+    if (response.statusCode == 200) {
+      final snackBar = Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Deleting post'),
+      ));
+
+      return snackBar;
+    } else
+      throw Exception('Failed to delete post');
   }
 }
